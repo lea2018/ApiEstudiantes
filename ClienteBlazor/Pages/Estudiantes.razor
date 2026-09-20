@@ -1,0 +1,52 @@
+﻿@page "/estudiantes"
+@inject HttpClient Http
+
+<h3>Lista de Estudiantes</h3>
+
+@if (estudiantes == null)
+{
+    <p>Cargando estudiantes...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Matrícula</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Fecha de Ingreso</th>
+                <th>Carrera</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var estudiante in estudiantes)
+            {
+                <tr>
+                    <td>@estudiante.IdEstudiante</td>
+                    <td>@estudiante.Nombre</td>
+                    <td>@estudiante.Apellido</td>
+                    <td>@estudiante.Matricula</td>
+                    <td>@estudiante.FechaNacimiento.ToString("dd/MM/yyyy")</td>
+                    <td>@estudiante.FechaIngreso.ToString("dd/MM/yyyy")</td>
+                    <td>@estudiante.Carrera</td>
+                    <td>@estudiante.Correo</td>
+                    <td>@estudiante.Telefono</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Estudiante>? estudiantes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        estudiantes = await Http.GetFromJsonAsync<List<Estudiante>>("api/Estudiantes");
+    }
+}
